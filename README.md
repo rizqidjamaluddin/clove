@@ -4,6 +4,23 @@ Clove is a new way to store and retrieve data in your Laravel 4 projects.
 
 ## Using Clove
 
+### Create the entity
+
+```php
+class Post implements Clove\Entity {
+
+}
+```
+
+### Create a repository
+
+```php
+class PostRepository extends Clove\SqlRepository {
+
+}
+```
+
+### Use it
 
 
 ## FAQ
