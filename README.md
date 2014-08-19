@@ -71,7 +71,7 @@ class PostController {
   
   public function create() {
     $post = new Post(Input::get('title'), Input::get('body'));
-    $this->postRepository->persist($post);
+    $this->postRepository->push($post); // can also use ->persist($post)
     
     // return ... with $post
   }
@@ -97,7 +97,26 @@ class PostController {
 
 #### Custom repository methods
 
+These work as you'd expect; just call them on the repository.
+
+```php
+$longestPost = $this->postRepository->longest();
+```
+
 #### Collection-style repository methods
+
+```php
+
+// get all the entities; can be hefty
+$allThePosts = $this->postRepository->all();
+
+// turn them all to array form
+$allThePostsInArrayForm = $this->postRepository->toArray();
+
+// split posts into parts of 5
+$chunks = $this->postRepository->chunk(5);
+
+```
 
 ### Using related entities
 
