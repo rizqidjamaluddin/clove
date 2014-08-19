@@ -2,12 +2,11 @@
 
 Clove is a new way to store and retrieve data in your Laravel 4 projects.
 
-Building principles:
-* We're after elegant, clear, and easier-to-work-with code
-* A bit of extra complexity on the repositories is acceptable to afford a better domain layer
-* Prefer explicit declarations over assumptions and magic
-* Flexibility of backend and caching is important
-* Repositories should act like collections
+## Principles
+
+Entities should be entities - they shouldn't care about how they're persisted at all. Anything should be a persistable entity, as well. Clove puts the persistence on the repository side, where this logic belongs. This gives total flexibility on how persistence works, avoiding magical mutators or translations, and opening the possibility to use caching software or even flat files to store entities. All this affords a clean, enjoyable entity.
+
+Clove repositories try their best to act like collections, as well, allowing for more intuitive and uniform interaction. See below for examples.
 
 ## Using Clove
 
