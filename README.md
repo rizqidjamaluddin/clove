@@ -39,9 +39,19 @@ class PostRepository extends Clove\SqlRepository {
   
   public function getFields(Entity $entity) {
     return [
-      new SqlField('Title', $entity->getTitle(), ['type' => 'varchar', 'length' => 200, 'required' => true]),
-      new SqlField('Body',  $entity->getBody(),  ['type' => 'text', 'required' => true]),
+      new SqlField('title', $entity->getTitle(), ['type' => 'varchar', 'length' => 200, 'required' => true]),
+      new SqlField('body',  $entity->getBody(),  ['type' => 'text', 'required' => true]),
     ];
+  }
+  
+  /**
+   * Get post with the longest content.
+   * Note: getBuilder is only available in SqlRepository; it contains a laravel query builder instance.
+   *
+   * @return Post|null
+   */
+  public function longest() {
+    return $this->getBuilder()->orderBy(DB::raw('LENGTH(body)'))->first();
   }
   
 }
@@ -54,6 +64,36 @@ class PostRepository extends Clove\SqlRepository {
 #### Custom repository methods
 
 #### Collection-style repository methods
+
+### Using related entities
+
+Clove doesn't currently have built-in tools to load relationships. Instead, I suggest loading them out of their appropriate repository from the related entities:
+
+```php
+class Comment implements Entity{ /* ... */ }
+
+class Post implements Entity {
+  
+  /* ... */
+  
+  public function getComments() {
+    return App::make("CommentRepository")->allFor($this);
+  }
+  
+}
+
+class CommentRepository extends SqlRepository {
+  
+  /* ... */
+  
+  public function allFor(Post $post) {
+    return $this->getBuilder()->where('post_id', $post->id)->get();
+  }
+  
+}
+```
+
+Worried about N+1? If this is a problem for you (benchmark first - it isn't always) use a custom repository method that does the join/where-in/what have you:
 
 ## FAQ
 
