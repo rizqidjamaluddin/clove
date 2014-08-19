@@ -60,6 +60,41 @@ class PostRepository extends Clove\SqlRepository {
 
 #### Creating, saving and getting entities
 
+Inject the repository through constructor injection, or `App::make`. The methods you see on the PostRepository work like their kin from `Illuminate\Support\Collection`.
+
+```php
+class PostController {
+  
+  function __construct(PostRepository $postRepository) {
+    $this->postRepository = $postRepository;
+  }
+  
+  public function create() {
+    $post = new Post(Input::get('title'), Input::get('body'));
+    $this->postRepository->persist($post);
+    
+    // return ... with $post
+  }
+  
+  public function delete($postId) {
+    $this->postRepository->forget($postId);
+  }
+  
+  public function homepage($page = 0) {
+    $posts = $this->postRepository->slice($page*5, 5);
+    
+    // return ... with $posts
+  }
+  
+  public function show($postId) {
+    $post = $this->postRepository->get($postId); // can also use ->postRepository[$postId]
+    
+    // return ... with $post
+  }
+  
+}
+```
+
 #### Custom repository methods
 
 #### Collection-style repository methods
