@@ -92,7 +92,12 @@ class CommentRepository extends SqlRepository {
 }
 ```
 
-Worried about N+1? If this is a problem for you (benchmark first - it isn't always) use a custom repository method that does the join/where-in/what have you:
+```php
+$post = $postRepository->first(); // could also do $postRepository[0]
+$comments = $post->getComments();
+```
+
+The custom method also provides an opportunity to use joins or other forms of aggressive loading to avoid the N+1 problem if you run into it.
 
 ## FAQ
 
